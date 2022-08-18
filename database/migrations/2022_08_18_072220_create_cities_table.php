@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::dropIfExists('cities');
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('country_id')->references('id')->on('countries')->onDelete('cascade');
+            $table->foreignId('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             $table->string('city');
             $table->timestamps();
         });

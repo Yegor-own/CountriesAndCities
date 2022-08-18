@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CountryResource;
 use App\Models\Country;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -14,20 +16,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::get();
-        return response()->json(
-            $countries
-        );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return CountryResource::collection(Country::all());
     }
 
     /**
@@ -38,7 +27,11 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $country = new Country;
+        $country->country = $request->country;
+        $country->save();
+        return redirect('/api/countries');
+        // return "sdfsd";
     }
 
     /**
@@ -49,7 +42,7 @@ class CountryController extends Controller
      */
     public function show(Country $country)
     {
-        //
+        return new CountryResource(Country::findOrFail($country->id));
     }
 
     /**
@@ -60,7 +53,8 @@ class CountryController extends Controller
      */
     public function edit(Country $country)
     {
-        //
+        echo csrf_token();
+        // return "asdasda";
     }
 
     /**
