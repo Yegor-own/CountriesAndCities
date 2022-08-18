@@ -46,18 +46,6 @@ class CountryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Country  $country
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Country $country)
-    {
-        echo csrf_token();
-        // return "asdasda";
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -66,7 +54,11 @@ class CountryController extends Controller
      */
     public function update(Request $request, Country $country)
     {
-        //
+        // echo $request->country;
+        $country->country = $request->country;
+        $country->save();
+        return redirect('/api/countries');
+        
     }
 
     /**
@@ -77,6 +69,7 @@ class CountryController extends Controller
      */
     public function destroy(Country $country)
     {
-        //
+        $country->delete();
+        return redirect('/api/countries');
     }
 }

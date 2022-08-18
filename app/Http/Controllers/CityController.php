@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CityResource;
 use App\Models\City;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        return CityResource::collection(City::all());
     }
 
     /**
@@ -25,7 +26,11 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $city = new City;
+        $city->city = $request->city;
+        $city->city_id = $request->country_id;
+        $city->save();
+        return redirect('/api/cities');
     }
 
     /**
@@ -36,7 +41,7 @@ class CityController extends Controller
      */
     public function show(City $city)
     {
-        //
+        return new CityResource(City::findOrFail($city->id));
     }
 
     /**
@@ -48,7 +53,27 @@ class CityController extends Controller
      */
     public function update(Request $request, City $city)
     {
-        //
+        $s = false;
+        if (isset($request->city)) {
+            $city->city = $request->city;
+            $s = true;
+        }
+        if (isset($request->country_id)) {
+            $s = true;
+            $city->country_id = $request->country_id;
+
+        }
+        if ($s) {
+            if (gettype($city->city) == "string") {
+                $city->save();
+                return redirect('/api/cities');
+            } else {
+                $city->city = $city->getOriginal("city");
+                $city->save();
+                return redirect('/api/cities');
+            }
+        }
+        echo "failed";
     }
 
     /**
@@ -59,6 +84,7 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        $city->delete();
+        return redirect('/api/cities');
     }
 }
