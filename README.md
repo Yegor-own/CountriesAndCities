@@ -25,6 +25,7 @@
 
 В MySQL создать таблицу ``countries_and_cities`` аутентификация в MySQL без пароля пользователь root
 
+Для создания таблиц и всего нужного контента запустить ``` php artisan migrate:fresh --seed ```
+
 Запускается через ``` php artisan serve ```
 
-Ссылка на Pstman
